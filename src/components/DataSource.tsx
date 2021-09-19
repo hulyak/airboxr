@@ -118,24 +118,22 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
         <GridList cellHeight={100} spacing={10}>
           {datasources.map((tile) => (
             <GridListTile key={tile.id}>
+              <Typography className={classes.name}>
+                {tile.name.toUpperCase()}
+              </Typography>
               <Link to={`/table/${tile.name}`} className={classes.link}>
-                <Typography className={classes.name}>
-                  {tile.name.toUpperCase()}
-                </Typography>
-
                 <img
                   className={classes.image}
                   src={renderDataSourceImage(tile.name)}
                   alt={tile.name}
                 />
-
-                <IconButton
-                  className={classes.button}
-                  onClick={() => toggle(tile.id)}
-                >
-                  {tile.isFavorited ? <Favorite /> : <FavoriteBorder />}
-                </IconButton>
               </Link>
+              <IconButton
+                className={classes.button}
+                onClick={() => toggle(tile.id)}
+              >
+                {tile.isFavorited ? <Favorite /> : <FavoriteBorder />}
+              </IconButton>
             </GridListTile>
           ))}
         </GridList>

@@ -13,7 +13,6 @@ import { Spinner } from "../components/Spinner";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import { apiGet } from "../config/api";
-import { useTable } from "../hooks/useTable";
 
 interface DataSource {
   id: number;
@@ -25,9 +24,9 @@ interface DataSource {
 
 export const SelectSourcePage = () => {
   const history = useHistory();
-
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
-  const { isLoading, error } = useTable("NAME");
 
   const useStyles = makeStyles(() => ({
     space: {
@@ -44,10 +43,20 @@ export const SelectSourcePage = () => {
   };
 
   useEffect(() => {
-    apiGet().then((data) => {
-      data.map((d: DataSource) => (d.isFavorited = false));
-      setDataSources(data);
-    });
+    apiGet()
+      .then((data) => {
+        setIsLoading(false);
+        if (data.statusCode) {
+          setError(data.message);
+        } else {
+          data.map((d: DataSource) => (d.isFavorited = false));
+          setDataSources(data);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
   }, []);
 
   return (

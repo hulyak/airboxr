@@ -3,10 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import { useHistory, useParams } from "react-router-dom";
 import { useSourceContext } from "../components/DataSource";
-import Alert from "@material-ui/lab/Alert";
-import { Spinner } from "../components/Spinner";
-import { useTable } from "../hooks/useTable";
-
 import {
   FormControl,
   FormControlLabel,
@@ -29,7 +25,6 @@ const SelectTablePage: React.FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [checked, setChecked] = useState(false);
   const [showChildOptions, setShowChildOptions] = useState(false);
-  const { isLoading, error } = useTable("NAME");
 
   type TableParams = {
     name: string;
@@ -43,7 +38,7 @@ const SelectTablePage: React.FunctionComponent = () => {
 
   const { tableOptions } = options;
 
-  console.log(tableOptions, "tableOptions");
+  // console.log(tableOptions, "tableOptions");
 
   const thisTable = tableOptions.find((service) => service.name === name) || {
     name: "",
@@ -69,7 +64,7 @@ const SelectTablePage: React.FunctionComponent = () => {
     }
   });
 
-  console.log(tableAllOptions, "tableAllOptions");
+  // console.log(tableAllOptions, "tableAllOptions");
 
   const handleOptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,24 +114,18 @@ const SelectTablePage: React.FunctionComponent = () => {
             onChange={handleOptionChange}
             value={selectedOption}
           >
-            {isLoading ? (
-              <Spinner />
-            ) : error ? (
-              <Alert severity="error">{error}</Alert>
-            ) : (
-              getRadioOptions().map((table: { title: string }) => {
-                return (
-                  <>
-                    <FormControlLabel
-                      key={table.title}
-                      value={table.title}
-                      control={<Radio />}
-                      label={table.title}
-                    />
-                  </>
-                );
-              })
-            )}
+            {getRadioOptions().map((table: { title: string }) => {
+              return (
+                <>
+                  <FormControlLabel
+                    key={table.title}
+                    value={table.title}
+                    control={<Radio />}
+                    label={table.title}
+                  />
+                </>
+              );
+            })}
           </RadioGroup>
         </FormControl>
       </FixedMiddleBodyWithVerticalScroll>
