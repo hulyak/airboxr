@@ -5,6 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useSourceContext } from "../components/DataSource";
 import Alert from "@material-ui/lab/Alert";
 import { Spinner } from "../components/Spinner";
+import { useTable } from "../hooks/useTable";
 
 import {
   FormControl,
@@ -28,6 +29,7 @@ const SelectTablePage: React.FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [checked, setChecked] = useState(false);
   const [showChildOptions, setShowChildOptions] = useState(false);
+  const { isLoading, error } = useTable("NAME");
 
   type TableParams = {
     name: string;
@@ -41,10 +43,7 @@ const SelectTablePage: React.FunctionComponent = () => {
 
   const { tableOptions } = options;
 
-  // console.log(tableOptions, "tableOptions");
-
-  const [isLoading] = useState(true);
-  const [error] = useState(null);
+  console.log(tableOptions, "tableOptions");
 
   const thisTable = tableOptions.find((service) => service.name === name) || {
     name: "",
@@ -134,20 +133,6 @@ const SelectTablePage: React.FunctionComponent = () => {
                       control={<Radio />}
                       label={table.title}
                     />
-                    {/* <div className="">
-                      {(table.children || []).map(
-                        (child: { title: string }) => {
-                          return (
-                            <FormControlLabel
-                              key={child.title}
-                              value={child.title}
-                              control={<Radio />}
-                              label={child.title}
-                            />
-                          );
-                        }
-                      )}
-                    </div> */}
                   </>
                 );
               })

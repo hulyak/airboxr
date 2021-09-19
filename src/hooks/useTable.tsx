@@ -61,5 +61,3 @@ export function useTable(tableName: string) {
 
   return state;
 }
-
-// const { data, isLoading, error } = useTable("NAME");
