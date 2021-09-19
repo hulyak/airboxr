@@ -79,11 +79,11 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
       color: "black",
     },
     search: {
-      "border-radius": "5px",
+      borderRadius: "5px",
       width: "100%",
-      "box-shadow": "none",
+      boxShadow: "none",
       border: "1px solid lightgray",
-      "margin-bottom": "30px",
+      marginBottom: "30px",
     },
     name: {
       padding: "5px 0 0 5px",
@@ -97,7 +97,8 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
 
   const toggle = (id: number) => {
     let newData = [...datasources];
-    let index = datasources.findIndex((d) => d.id === id);
+    let index = datasources.findIndex((data) => data.id === id);
+
     let item = {
       ...newData[index],
       isFavorited: !newData[index].isFavorited,

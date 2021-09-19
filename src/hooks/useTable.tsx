@@ -1,10 +1,24 @@
 import { useEffect, useReducer } from "react";
 import { apiGet } from "../config/api";
 
-const reducer = (prevState, action) => {
+const initialState = {
+  isLoading: true,
+  error: null,
+  data: null,
+};
+
+type TableData = typeof initialState;
+
+type TableAction = {
+  type: "FETCH_SUCCESS" | "FETCH_FAILED";
+  data?: string;
+  error?: string;
+};
+
+const reducer = (prevState: TableData, action: TableAction) => {
   switch (action.type) {
     case "FETCH_SUCCESS":
-      return { isLoading: false, error: null, show: action.show };
+      return { isLoading: false, error: null, data: action.data };
     case "FETCH_FAILED":
       return { ...prevState, isLoading: false, error: action.error };
     default:
@@ -12,21 +26,10 @@ const reducer = (prevState, action) => {
   }
 };
 
-interface DataSource {
-  id: number;
-  name: string;
-  uuid: string;
-  isFavorited: boolean;
-  tables: [];
-}
+export function useTable(tableName: string) {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-export function useTable(tableName) {
-  const [state, dispatch] = useReducer(reducer, {
-    data: null,
-    isLoading: true,
-    error: null,
-  });
-  // console.log(state);
+  console.log(state, "state");
 
   useEffect(() => {
     let isMounted = true;
@@ -48,5 +51,4 @@ export function useTable(tableName) {
   }, [tableName]);
 
   return state;
-  // console.log(show);
 }

@@ -13,6 +13,7 @@ import { Spinner } from "../components/Spinner";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import { useTable } from "../hooks/useTable";
+import { apiGet } from "../config/api";
 
 interface DataSource {
   id: number;
@@ -43,22 +44,12 @@ export const SelectSourcePage = () => {
     onClick: () => history.goBack(),
   };
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-
-  //   then((data) => {
-  //     setIsLoading(false);
-  //     if (data.statusCode) {
-  //       setError(data.message);
-  //     } else {
-  //       data.map((d: DataSource) => (d.isFavorited = false));
-  //       setDataSources(data);
-  //     }
-  //   }).catch((error) => {
-  //     setIsLoading(false);
-  //     setError(error);
-  //   });
-  // }, []);
+  useEffect(() => {
+    apiGet().then((data) => {
+      data.map((d: DataSource) => (d.isFavorited = false));
+      setDataSources(data);
+    });
+  }, []);
 
   return (
     <PageContainer>

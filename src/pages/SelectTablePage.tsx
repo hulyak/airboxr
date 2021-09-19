@@ -29,15 +29,20 @@ const SelectTablePage: React.FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [checked, setChecked] = useState(false);
 
-  const { name } = useParams();
+  type TableParams = {
+    name: string;
+  };
+
+  const { name } = useParams<TableParams>();
+
   const history = useHistory();
 
   const options = useSourceContext();
   const { tableOptions } = options;
 
-  const thisTable = tableOptions.find((service) => service.name === name);
-
   const { data, isLoading, error } = useTable(name);
+
+  const thisTable = tableOptions.find((service) => service.name === name);
 
   // console.log(options, "options");
 
