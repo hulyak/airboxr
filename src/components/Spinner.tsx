@@ -1,4 +1,4 @@
-import { Typography, Box } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -19,7 +19,7 @@ export const Spinner = () => {
 
   return (
     <div className={classes.spinner}>
-      <CircularProgress aria-busy="true" />
+      <CircularProgress aria-busy="true" color="secondary" />
       <Typography className={classes.text} variant="h3">
         Loading...
       </Typography>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useCallback, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import { useHistory, useParams } from "react-router-dom";
@@ -23,11 +23,11 @@ import {
   TopbarBackButton,
   FixedBottomPominentButton,
 } from "../layout-components";
-import { useTable } from "../hooks/useTable";
 
 const SelectTablePage: React.FunctionComponent = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [checked, setChecked] = useState(false);
+  const [showChildOptions, setShowChildOptions] = useState(false);
 
   type TableParams = {
     name: string;
@@ -38,33 +38,39 @@ const SelectTablePage: React.FunctionComponent = () => {
   const history = useHistory();
 
   const options = useSourceContext();
+
   const { tableOptions } = options;
 
-  const { data, isLoading, error } = useTable(name);
+  // console.log(tableOptions, "tableOptions");
 
-  const thisTable = tableOptions.find((service) => service.name === name);
+  const [isLoading] = useState(true);
+  const [error] = useState(null);
 
-  // console.log(options, "options");
+  const thisTable = tableOptions.find((service) => service.name === name) || {
+    name: "",
+    tables: [{ title: "" }],
+  };
 
-  // console.log(tableOptions, "options");
-  // for (const k in tableOptions) {
-  //   console.log(k);
-  // }
+  const tableAllOptions: Record<string, any> = {};
 
-  tableOptions.map((value, index) => {
-    console.log(value.tables, "value");
+  thisTable.tables.forEach((table) => {
+    if (table.title.includes("||")) {
+      const [parentTable, childTable] = table.title.split("||");
+      if (tableAllOptions[parentTable]) {
+        tableAllOptions[parentTable].children.push({ title: childTable });
+      } else {
+        tableAllOptions[parentTable] = {
+          ...table,
+          title: parentTable,
+          children: [{ title: childTable }],
+        };
+      }
+    } else {
+      tableAllOptions[table.title] = table;
+    }
   });
 
-  tableOptions.map((value, index) => {
-    const { tables } = value;
-    tables.map((title, index) => {
-      console.log(title, "title");
-    });
-  });
-
-  tableOptions.filter((tableName) => {
-    return tableName.name;
-  });
+  console.log(tableAllOptions, "tableAllOptions");
 
   const handleOptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,24 +94,26 @@ const SelectTablePage: React.FunctionComponent = () => {
     onClick: () => history.goBack(),
   };
 
-  // tableOptions.filter((tableName) => {});
+  const getRadioOptions = () => {
+    if (showChildOptions) {
+      return tableAllOptions[selectedOption]?.children || [];
+    } else {
+      return Object.values(tableAllOptions);
+    }
+  };
+
   return (
     <PageContainer>
       <Header />
       <FixedTopBar title="Select table" leftButton={topbarLeftButton} />
       <FixedMiddleBodyWithVerticalScroll>
-        {tableOptions.filter((tableName) => {
-          <Typography>{tableName.name}</Typography>;
-        })}
         <Typography variant="h3" className={classes.space}>
-          has the following tables ready for import.Please select the table you
-          would like to import.
+          {thisTable.name} has the following tables ready for import.Please
+          select the table you would like to import.
         </Typography>
-
         <FormControl component="fieldset">
-          <InputLabel htmlFor="component-simple">Filter</InputLabel>
-          <Input id="component-simple" />
-
+          <InputLabel htmlFor="Filter">Filter</InputLabel>
+          <Input id="Filter" />
           <RadioGroup
             aria-label="filter"
             name="radio-buttons-group"
@@ -117,11 +125,32 @@ const SelectTablePage: React.FunctionComponent = () => {
             ) : error ? (
               <Alert severity="error">{error}</Alert>
             ) : (
-              <FormControlLabel
-                value={thisTable.name}
-                control={<Radio />}
-                label={thisTable.name}
-              />
+              getRadioOptions().map((table: { title: string }) => {
+                return (
+                  <>
+                    <FormControlLabel
+                      key={table.title}
+                      value={table.title}
+                      control={<Radio />}
+                      label={table.title}
+                    />
+                    {/* <div className="">
+                      {(table.children || []).map(
+                        (child: { title: string }) => {
+                          return (
+                            <FormControlLabel
+                              key={child.title}
+                              value={child.title}
+                              control={<Radio />}
+                              label={child.title}
+                            />
+                          );
+                        }
+                      )}
+                    </div> */}
+                  </>
+                );
+              })
             )}
           </RadioGroup>
         </FormControl>
@@ -129,7 +158,7 @@ const SelectTablePage: React.FunctionComponent = () => {
 
       <FixedBottomPominentButton
         title="Next"
-        onClick={() => history.push(`/services/:name`)}
+        onClick={() => setShowChildOptions(true)}
         disabled={!checked}
       />
     </PageContainer>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Alert from "@material-ui/lab/Alert";
-import { Typography, Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import {
   PageContainer,
@@ -12,7 +12,6 @@ import { TitlebarGridList } from "../components/DataSource";
 import { Spinner } from "../components/Spinner";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
-import { useTable } from "../hooks/useTable";
 import { apiGet } from "../config/api";
 
 interface DataSource {
@@ -26,8 +25,8 @@ interface DataSource {
 export const SelectSourcePage = () => {
   const history = useHistory();
 
-  const { data, isLoading, error } = useTable(name);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
 
   const useStyles = makeStyles(() => ({
@@ -45,10 +44,20 @@ export const SelectSourcePage = () => {
   };
 
   useEffect(() => {
-    apiGet().then((data) => {
-      data.map((d: DataSource) => (d.isFavorited = false));
-      setDataSources(data);
-    });
+    apiGet()
+      .then((data) => {
+        setIsLoading(false);
+        if (data.statusCode) {
+          setError(data.message);
+        } else {
+          data.map((d: DataSource) => (d.isFavorited = false));
+          setDataSources(data);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
   }, []);
 
   return (

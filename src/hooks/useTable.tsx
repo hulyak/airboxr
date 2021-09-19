@@ -3,11 +3,15 @@ import { apiGet } from "../config/api";
 
 const initialState = {
   isLoading: true,
-  error: null,
-  data: null,
+  error: "",
+  data: "",
 };
 
-type TableData = typeof initialState;
+type TableData = {
+  isLoading: boolean;
+  error: string | null;
+  data: string;
+};
 
 type TableAction = {
   type: "FETCH_SUCCESS" | "FETCH_FAILED";
@@ -15,12 +19,17 @@ type TableAction = {
   error?: string;
 };
 
-const reducer = (prevState: TableData, action: TableAction) => {
+const reducer = (prevState: TableData, action: TableAction): TableData => {
   switch (action.type) {
     case "FETCH_SUCCESS":
-      return { isLoading: false, error: null, data: action.data };
+      return {
+        ...prevState,
+        isLoading: false,
+        error: null,
+        data: action.data || "",
+      };
     case "FETCH_FAILED":
-      return { ...prevState, isLoading: false, error: action.error };
+      return { ...prevState, isLoading: false, error: action.error || "" };
     default:
       return prevState;
   }
@@ -29,7 +38,7 @@ const reducer = (prevState: TableData, action: TableAction) => {
 export function useTable(tableName: string) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  console.log(state, "state");
+  // console.log(state, "state");
 
   useEffect(() => {
     let isMounted = true;
@@ -41,7 +50,7 @@ export function useTable(tableName: string) {
       })
       .catch((err) => {
         if (isMounted) {
-          dispatch({ type: "FETCh_FAILED", error: err.message });
+          dispatch({ type: "FETCH_FAILED", error: err.message });
         }
       });
 
@@ -52,3 +61,5 @@ export function useTable(tableName: string) {
 
   return state;
 }
+
+// const { data, isLoading, error } = useTable("NAME");

@@ -34,10 +34,10 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
   datasource,
 }) => {
   const [datasources, setDatasources] = useState<DataSource[]>(datasource);
+
   SourceContext = createContext<{ tableOptions: DataSource[] }>({
     tableOptions: datasources,
   });
-  console.log(datasources, "fromDataSource");
 
   useEffect(() => setDatasources(datasource), [datasource]);
 
@@ -92,6 +92,10 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
       height: "100%",
       width: "100%",
     },
+    link: {
+      textDecoration: "none",
+      color: "black",
+    },
   }));
   const classes = useStyles();
 
@@ -114,7 +118,7 @@ export const TitlebarGridList: React.FunctionComponent<TileProps> = ({
         <GridList cellHeight={100} spacing={10}>
           {datasources.map((tile) => (
             <GridListTile key={tile.id}>
-              <Link to={`/table/${tile.name}`}>
+              <Link to={`/table/${tile.name}`} className={classes.link}>
                 <Typography className={classes.name}>
                   {tile.name.toUpperCase()}
                 </Typography>
