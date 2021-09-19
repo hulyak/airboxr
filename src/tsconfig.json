@@ -6,16 +6,8 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": [
-      "es6",
-      "dom",
-      "es2017",
-      "esnext.asynciterable"
-    ],
-    "types": [
-      "google-apps-script",
-      "node"
-    ],
+    "lib": ["es6", "dom", "es2017", "esnext.asynciterable"],
+    "types": ["google-apps-script", "node"],
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitReturns": true,
@@ -35,8 +27,5 @@
     "isolatedModules": false,
     "noEmit": true
   },
-  "exclude": [
-    "node_modules",
-    "./node_modules/*"
-  ]
+  "exclude": ["node_modules", "./node_modules/*"]
 }

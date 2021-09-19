@@ -1,5 +1,11 @@
 {
   "title": "Material demo",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -8,6 +14,7 @@
   },
   "main": "index.tsx",
   "devDependencies": {
+    "@types/react-router-dom": "^5.1.9",
     "react-scripts": "latest"
   },
   "description": "https://github.com/mui-org/material-ui/blob/master/docs/src/pages/guides/composition/Composition.tsx",
@@ -27,5 +34,17 @@
   },
   "keywords": [],
   "name": "airboxr-fte-assignment-1-forked",
-  "version": "0.0.231"
+  "version": "0.0.231",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

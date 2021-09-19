@@ -3,7 +3,7 @@ import {
   IconButton,
   Typography,
   Button,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import React from "react";
@@ -24,12 +24,13 @@ export const FixedTopBar: React.FunctionComponent<TopBarProps> = (props) => {
       style={{
         paddingLeft: 15,
         paddingRight: 15,
-        top: 0,
+        display: "flex",
+        top: 35,
         right: 0,
         bottom: "auto",
         left: 0,
         position: "fixed",
-        height: 60
+        height: 60,
       }}
       pt={1}
       display="flex"
@@ -55,38 +56,42 @@ interface BottomButtonProps {
   processing?: boolean;
   onClick: () => void | Promise<void>;
   title: string;
+  disabled?: boolean;
 }
 
-export const FixedBottomPominentButton: React.FunctionComponent<BottomButtonProps> = (
-  props
-) => {
-  return (
-    <Box
-      style={{
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 15,
-        height: 50,
-        top: "auto",
-        right: 0,
-        bottom: 0,
-        left: 0,
-        position: "fixed"
-      }}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
-      {props.processing || false ? (
-        <CircularProgress />
-      ) : (
-        <Button style={{ height: 50, width: "100%" }} onClick={props.onClick}>
-          {props.title}
-        </Button>
-      )}
-    </Box>
-  );
-};
+export const FixedBottomPominentButton: React.FunctionComponent<BottomButtonProps> =
+  (props) => {
+    return (
+      <Box
+        style={{
+          paddingLeft: 15,
+          paddingRight: 15,
+          paddingBottom: 15,
+          height: 50,
+          top: "auto",
+          right: 0,
+          bottom: 0,
+          left: 0,
+          position: "fixed",
+        }}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        {props.processing || false ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            style={{ height: 50, width: "100%" }}
+            onClick={props.onClick}
+            disabled={props.disabled}
+          >
+            {props.title}
+          </Button>
+        )}
+      </Box>
+    );
+  };
 
 export const FixedMiddleBodyWithVerticalScroll: React.FunctionComponent<{}> = (
   props
@@ -101,7 +106,7 @@ export const FixedMiddleBodyWithVerticalScroll: React.FunctionComponent<{}> = (
         bottom: 65,
         left: 0,
         position: "fixed",
-        overflowY: "scroll"
+        overflowY: "scroll",
       }}
       display="flex"
       flexDirection="column"

@@ -1,5 +1,3 @@
-# Airboxr FTE Frontend Assignment
-
 ## Instructions
 
 This is a sandbox environment created for you to attempt your assignment. Some libraries you'll need are already installed and you're free to install any additional libraries as you see fit. You may also refer to any resource to help you in your attempt. To get started, simply fork this sandbox and play around. If you have any questions, do not hesitate to reach out to your POC at Airboxr.
