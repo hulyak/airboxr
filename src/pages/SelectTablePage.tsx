@@ -64,7 +64,7 @@ const SelectTablePage: React.FunctionComponent = () => {
     }
   });
 
-  // console.log(tableAllOptions, "tableAllOptions");
+  console.log(tableAllOptions, "tableAllOptions");
 
   const handleOptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,14 +116,12 @@ const SelectTablePage: React.FunctionComponent = () => {
           >
             {getRadioOptions().map((table: { title: string }) => {
               return (
-                <>
-                  <FormControlLabel
-                    key={table.title}
-                    value={table.title}
-                    control={<Radio />}
-                    label={table.title}
-                  />
-                </>
+                <FormControlLabel
+                  key={table.title}
+                  value={table.title}
+                  control={<Radio />}
+                  label={table.title}
+                />
               );
             })}
           </RadioGroup>
