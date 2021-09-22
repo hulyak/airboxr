@@ -17,7 +17,6 @@ import { apiGet } from "../config/api";
 interface DataSource {
   id: number;
   name: string;
-  uuid: string;
   isFavorited: boolean;
   tables: [];
 }

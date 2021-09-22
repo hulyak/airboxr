@@ -47,7 +47,7 @@ const SelectTablePage: React.FunctionComponent = () => {
 
   const tableAllOptions: Record<string, any> = {};
 
-  thisTable.tables.forEach((table) => {
+  thisTable.tables.map((table) => {
     if (table.title.includes("||")) {
       const [parentTable, childTable] = table.title.split("||");
       if (tableAllOptions[parentTable]) {
@@ -61,10 +61,11 @@ const SelectTablePage: React.FunctionComponent = () => {
       }
     } else {
       tableAllOptions[table.title] = table;
+      console.log(table, "table");
     }
   });
 
-  console.log(tableAllOptions, "tableAllOptions");
+  // console.log(tableAllOptions, "tableAllOptions");
 
   const handleOptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

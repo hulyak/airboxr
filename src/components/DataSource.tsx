@@ -17,7 +17,6 @@ import GoogleAnalytics from "../public/google-analytics-logo.png";
 interface DataSource {
   id: number;
   name: string;
-  uuid: string;
   isFavorited: boolean;
   tables: [];
 }
